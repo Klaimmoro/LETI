@@ -1,0 +1,5 @@
+﻿  fibHeap.cpp
+c:\users\klaim\desktop\'лэти'\курс №2\второй семестр\аисд\лаба №2\fibheap.cpp(96): warning C4244: инициализация: преобразование "double" в "float", возможна потеря данных
+c:\users\klaim\desktop\'лэти'\курс №2\второй семестр\аисд\лаба №2\fibheap.cpp(97): warning C4244: инициализация: преобразование "float" в "int", возможна потеря данных
+c:\users\klaim\desktop\'лэти'\курс №2\второй семестр\аисд\лаба №2\fibheap.cpp(203): warning C4244: =: преобразование "double" в "int", возможна потеря данных
+  Лаба №2.vcxproj -> C:\Users\klaim\Desktop\'ЛЭТИ'\Курс №2\второй семестр\АиСД\Лаба №2\x64\Debug\Лаба №2.exe
