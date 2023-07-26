@@ -1,0 +1,30 @@
+﻿  binaryTree.cpp
+c:\users\klaim\desktop\'лэти'\курс №2\второй семестр\аисд\лаба №1\binarytree.cpp(79): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
+c:\users\klaim\desktop\'лэти'\курс №2\второй семестр\аисд\лаба №1\binarytree.cpp(94): warning C4244: /=: преобразование "double" в "int", возможна потеря данных
+c:\users\klaim\desktop\'лэти'\курс №2\второй семестр\аисд\лаба №1\binarytree.cpp(98): warning C4244: аргумент: преобразование "int" в "T", возможна потеря данных
+          with
+          [
+              T=float
+          ]
+c:\users\klaim\desktop\'лэти'\курс №2\второй семестр\аисд\лаба №1\binarytree.cpp(99): warning C4244: аргумент: преобразование "int" в "T", возможна потеря данных
+          with
+          [
+              T=float
+          ]
+c:\users\klaim\desktop\'лэти'\курс №2\второй семестр\аисд\лаба №1\binarytree.cpp(104): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
+c:\users\klaim\desktop\'лэти'\курс №2\второй семестр\аисд\лаба №1\binarytree.cpp(119): warning C4244: /=: преобразование "double" в "int", возможна потеря данных
+c:\users\klaim\desktop\'лэти'\курс №2\второй семестр\аисд\лаба №1\binarytree.cpp(123): warning C4244: аргумент: преобразование "int" в "T", возможна потеря данных
+          with
+          [
+              T=float
+          ]
+c:\users\klaim\desktop\'лэти'\курс №2\второй семестр\аисд\лаба №1\binarytree.cpp(124): warning C4244: аргумент: преобразование "int" в "T", возможна потеря данных
+          with
+          [
+              T=float
+          ]
+c:\users\klaim\desktop\'лэти'\курс №2\второй семестр\аисд\лаба №1\binarytree.cpp(129): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
+c:\users\klaim\desktop\'лэти'\курс №2\второй семестр\аисд\лаба №1\binarytree.cpp(148): warning C4244: =: преобразование "double" в "int", возможна потеря данных
+c:\users\klaim\desktop\'лэти'\курс №2\второй семестр\аисд\лаба №1\binarytree.cpp(150): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
+c:\users\klaim\desktop\'лэти'\курс №2\второй семестр\аисд\лаба №1\binarytree.cpp(165): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
+  Лаба №1.vcxproj -> C:\Users\klaim\Desktop\'ЛЭТИ'\Курс №2\второй семестр\АиСД\Лаба №1\x64\Debug\Лаба №1.exe
