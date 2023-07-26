@@ -1,0 +1,5 @@
+C:\Users\klaim\Desktop\Fractal\x64\Debug\Fractal.vcxproj.AssemblyReference.cache
+C:\Users\klaim\Desktop\Fractal\x64\Debug\Fractal.vcxproj.SuggestedBindingRedirects.cache
+C:\Users\klaim\Desktop\Fractal\x64\Debug\Fractal.MyForm.resources
+C:\Users\klaim\Desktop\Fractal\x64\Debug\Fractal.vcxproj.GenerateResource.cache
+C:\Users\klaim\Desktop\Fractal\x64\Debug\Fractal.exe

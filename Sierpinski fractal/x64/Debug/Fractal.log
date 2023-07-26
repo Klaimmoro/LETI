@@ -1,0 +1,35 @@
+﻿  MyForm.cpp
+C:\Users\klaim\Desktop\Fractal\MyForm.h(191,57): warning C4244: аргумент: преобразование "double" в "float", возможна потеря данных
+C:\Users\klaim\Desktop\Fractal\MyForm.h(191,52): warning C4244: аргумент: преобразование "double" в "float", возможна потеря данных
+C:\Users\klaim\Desktop\Fractal\MyForm.h(191,48): warning C4244: аргумент: преобразование "double" в "float", возможна потеря данных
+C:\Users\klaim\Desktop\Fractal\MyForm.h(191,44): warning C4244: аргумент: преобразование "double" в "float", возможна потеря данных
+C:\Users\klaim\Desktop\Fractal\MyForm.h(192,57): warning C4244: аргумент: преобразование "double" в "float", возможна потеря данных
+C:\Users\klaim\Desktop\Fractal\MyForm.h(192,52): warning C4244: аргумент: преобразование "double" в "float", возможна потеря данных
+C:\Users\klaim\Desktop\Fractal\MyForm.h(192,48): warning C4244: аргумент: преобразование "double" в "float", возможна потеря данных
+C:\Users\klaim\Desktop\Fractal\MyForm.h(192,44): warning C4244: аргумент: преобразование "double" в "float", возможна потеря данных
+C:\Users\klaim\Desktop\Fractal\MyForm.h(193,57): warning C4244: аргумент: преобразование "double" в "float", возможна потеря данных
+C:\Users\klaim\Desktop\Fractal\MyForm.h(193,52): warning C4244: аргумент: преобразование "double" в "float", возможна потеря данных
+C:\Users\klaim\Desktop\Fractal\MyForm.h(193,48): warning C4244: аргумент: преобразование "double" в "float", возможна потеря данных
+C:\Users\klaim\Desktop\Fractal\MyForm.h(193,44): warning C4244: аргумент: преобразование "double" в "float", возможна потеря данных
+C:\Users\klaim\Desktop\Fractal\MyForm.h(194,57): warning C4244: аргумент: преобразование "double" в "float", возможна потеря данных
+C:\Users\klaim\Desktop\Fractal\MyForm.h(194,52): warning C4244: аргумент: преобразование "double" в "float", возможна потеря данных
+C:\Users\klaim\Desktop\Fractal\MyForm.h(194,48): warning C4244: аргумент: преобразование "double" в "float", возможна потеря данных
+C:\Users\klaim\Desktop\Fractal\MyForm.h(194,44): warning C4244: аргумент: преобразование "double" в "float", возможна потеря данных
+C:\Users\klaim\Desktop\Fractal\MyForm.h(195,57): warning C4244: аргумент: преобразование "double" в "float", возможна потеря данных
+C:\Users\klaim\Desktop\Fractal\MyForm.h(195,52): warning C4244: аргумент: преобразование "double" в "float", возможна потеря данных
+C:\Users\klaim\Desktop\Fractal\MyForm.h(195,48): warning C4244: аргумент: преобразование "double" в "float", возможна потеря данных
+C:\Users\klaim\Desktop\Fractal\MyForm.h(195,44): warning C4244: аргумент: преобразование "double" в "float", возможна потеря данных
+C:\Users\klaim\Desktop\Fractal\MyForm.h(196,57): warning C4244: аргумент: преобразование "double" в "float", возможна потеря данных
+C:\Users\klaim\Desktop\Fractal\MyForm.h(196,52): warning C4244: аргумент: преобразование "double" в "float", возможна потеря данных
+C:\Users\klaim\Desktop\Fractal\MyForm.h(196,48): warning C4244: аргумент: преобразование "double" в "float", возможна потеря данных
+C:\Users\klaim\Desktop\Fractal\MyForm.h(196,44): warning C4244: аргумент: преобразование "double" в "float", возможна потеря данных
+C:\Users\klaim\Desktop\Fractal\MyForm.h(197,57): warning C4244: аргумент: преобразование "double" в "float", возможна потеря данных
+C:\Users\klaim\Desktop\Fractal\MyForm.h(197,52): warning C4244: аргумент: преобразование "double" в "float", возможна потеря данных
+C:\Users\klaim\Desktop\Fractal\MyForm.h(197,48): warning C4244: аргумент: преобразование "double" в "float", возможна потеря данных
+C:\Users\klaim\Desktop\Fractal\MyForm.h(197,44): warning C4244: аргумент: преобразование "double" в "float", возможна потеря данных
+C:\Users\klaim\Desktop\Fractal\MyForm.h(198,57): warning C4244: аргумент: преобразование "double" в "float", возможна потеря данных
+C:\Users\klaim\Desktop\Fractal\MyForm.h(198,52): warning C4244: аргумент: преобразование "double" в "float", возможна потеря данных
+C:\Users\klaim\Desktop\Fractal\MyForm.h(198,48): warning C4244: аргумент: преобразование "double" в "float", возможна потеря данных
+C:\Users\klaim\Desktop\Fractal\MyForm.h(198,44): warning C4244: аргумент: преобразование "double" в "float", возможна потеря данных
+  MyForm.obj : обнаружен модуль MSIL; для MSIL последовательная компоновка отключена; выполняется полная компоновка
+  Fractal.vcxproj -> C:\Users\klaim\Desktop\Fractal\x64\Debug\Fractal.exe
