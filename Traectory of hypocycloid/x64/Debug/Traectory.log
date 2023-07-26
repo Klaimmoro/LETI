@@ -1,0 +1,23 @@
+﻿  MyForm.cpp
+C:\Users\klaim\Desktop\Traectory\MyForm.h(560,60): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
+C:\Users\klaim\Desktop\Traectory\MyForm.h(575,60): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
+C:\Users\klaim\Desktop\Traectory\MyForm.h(620,39): warning C4244: аргумент: преобразование "double" в "int", возможна потеря данных
+C:\Users\klaim\Desktop\Traectory\MyForm.h(620,31): warning C4244: аргумент: преобразование "double" в "int", возможна потеря данных
+C:\Users\klaim\Desktop\Traectory\MyForm.h(621,35): warning C4244: аргумент: преобразование "double" в "int", возможна потеря данных
+C:\Users\klaim\Desktop\Traectory\MyForm.h(621,32): warning C4244: аргумент: преобразование "double" в "int", возможна потеря данных
+C:\Users\klaim\Desktop\Traectory\MyForm.h(642,86): warning C4244: аргумент: преобразование "double" в "int", возможна потеря данных
+C:\Users\klaim\Desktop\Traectory\MyForm.h(642,53): warning C4244: аргумент: преобразование "double" в "int", возможна потеря данных
+C:\Users\klaim\Desktop\Traectory\MyForm.h(645,20): warning C4244: аргумент: преобразование "double" в "int", возможна потеря данных
+C:\Users\klaim\Desktop\Traectory\MyForm.h(646,21): warning C4244: аргумент: преобразование "double" в "int", возможна потеря данных
+C:\Users\klaim\Desktop\Traectory\MyForm.h(668,39): warning C4244: аргумент: преобразование "double" в "int", возможна потеря данных
+C:\Users\klaim\Desktop\Traectory\MyForm.h(668,31): warning C4244: аргумент: преобразование "double" в "int", возможна потеря данных
+C:\Users\klaim\Desktop\Traectory\MyForm.h(669,35): warning C4244: аргумент: преобразование "double" в "int", возможна потеря данных
+C:\Users\klaim\Desktop\Traectory\MyForm.h(669,32): warning C4244: аргумент: преобразование "double" в "int", возможна потеря данных
+C:\Users\klaim\Desktop\Traectory\MyForm.h(690,90): warning C4244: аргумент: преобразование "double" в "int", возможна потеря данных
+C:\Users\klaim\Desktop\Traectory\MyForm.h(690,55): warning C4244: аргумент: преобразование "double" в "int", возможна потеря данных
+C:\Users\klaim\Desktop\Traectory\MyForm.h(693,21): warning C4244: аргумент: преобразование "double" в "int", возможна потеря данных
+C:\Users\klaim\Desktop\Traectory\MyForm.h(694,21): warning C4244: аргумент: преобразование "double" в "int", возможна потеря данных
+C:\Users\klaim\Desktop\Traectory\MyForm.h(604,21): warning C4101: y1: неиспользованная локальная переменная
+C:\Users\klaim\Desktop\Traectory\MyForm.h(604,17): warning C4101: x1: неиспользованная локальная переменная
+  MyForm.obj : обнаружен модуль MSIL; для MSIL последовательная компоновка отключена; выполняется полная компоновка
+  Traectory.vcxproj -> C:\Users\klaim\Desktop\Traectory\x64\Debug\Traectory.exe

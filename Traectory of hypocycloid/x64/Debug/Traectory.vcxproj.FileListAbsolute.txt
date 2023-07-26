@@ -1,0 +1,5 @@
+C:\Users\klaim\Desktop\Traectory\x64\Debug\Traectory.vcxproj.AssemblyReference.cache
+C:\Users\klaim\Desktop\Traectory\x64\Debug\Traectory.vcxproj.SuggestedBindingRedirects.cache
+C:\Users\klaim\Desktop\Traectory\x64\Debug\Traectory.MyForm.resources
+C:\Users\klaim\Desktop\Traectory\x64\Debug\Traectory.vcxproj.GenerateResource.cache
+C:\Users\klaim\Desktop\Traectory\x64\Debug\Traectory.exe
