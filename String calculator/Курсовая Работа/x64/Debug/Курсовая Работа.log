@@ -1,0 +1,5 @@
+﻿C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppClean.targets(77,5): warning : Отказано в доступе по пути "c:\users\klaim\desktop\'лэти'\курс №2\аисд\курсовая работа\x64\debug\курсовая работа.exe".
+  Курсовая Работа.cpp
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.34.31933\include\charconv(13): warning STL4038: The contents of <charconv> are available only with C++17 or later.
+C:\Users\klaim\Desktop\'ЛЭТИ'\Курс №2\АиСД\Курсовая Работа\Курсовая Работа\Курсовая Работа.cpp(45,29): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
+LINK : fatal error LNK1104: не удается открыть файл "C:\Users\klaim\Desktop\'ЛЭТИ'\Курс №2\АиСД\Курсовая Работа\x64\Debug\Курсовая Работа.exe"
