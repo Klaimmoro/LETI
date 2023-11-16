@@ -1,8 +1,11 @@
 package io.proj3ct.GrowGuardian.service;
+
 import io.proj3ct.GrowGuardian.config.BotConfig;
 import lombok.extern.slf4j.Slf4j;
+import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.openqa.selenium.Cookie;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.springframework.stereotype.Component;
@@ -17,16 +20,23 @@ import org.xml.sax.SAXException;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPathExpressionException;
 import java.io.*;
-import org.jsoup.Jsoup;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.StringTokenizer;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 
 @Slf4j
 @Component
 public class TelegramBot extends TelegramLongPollingBot {
 
+
     public chosenActivity act = new chosenActivity();
     final BotConfig config;
+
+
 
     String CallData = "";
     boolean StopUpdate = true;
@@ -81,6 +91,8 @@ public class TelegramBot extends TelegramLongPollingBot {
                     try {
                         findActivityReceived(chatID);
                     } catch (IOException | ParserConfigurationException | SAXException | XPathExpressionException e) {
+                        throw new RuntimeException(e);
+                    } catch (InterruptedException e) {
                         throw new RuntimeException(e);
                     }
                     break;
@@ -462,15 +474,111 @@ public class TelegramBot extends TelegramLongPollingBot {
 
 
     }
-    private void findActivityReceived(long chatID) throws IOException, ParserConfigurationException, SAXException, XPathExpressionException {
+    private void findActivityReceived(long chatID) throws IOException, ParserConfigurationException, SAXException, XPathExpressionException, InterruptedException {
         System.setProperty("webdriver.gecko.driver","C:\\Users\\klaim\\Desktop\\'ЛЭТИ'\\Kotlin\\GrowGuardian\\drivers\\geckodriver.exe");
 
         WebDriver driver = new FirefoxDriver();
-        driver.get("https://afisha.yandex.ru/saint-petersburg");
-        String html = driver.getPageSource();
-        Document doc = Jsoup.parse(html);
+        driver.manage().deleteAllCookies();
+        driver.get("https://afisha.yandex.ru/saint-petersburg?rubric=cinema");
+        /*driver.get("https://passport.yandex.ru/auth/welcome?origin=afisha&retpath=https%3A%2F%2Fafisha.yandex.ru%2Fsaint-petersburg");
+        driver.findElement(By.xpath("//*[@id=\"passp-field-login\"]")).sendKeys("zakhar.vorzhev@yandex.ru");
+        driver.findElement(By.xpath("//*[@id=\"passp:sign-in\"]")).click();
+        driver.findElement(By.xpath("//*[@id=\"passp-field-passwd\"]")).sendKeys("kEKLOL228");
+        driver.findElement(By.xpath("//*[@id=\"passp:sign-in\"]")).click();
+        java.util.concurrent.TimeUnit.SECONDS.sleep(20);
+        File file = new File("C:\\Users\\klaim\\Desktop\\'ЛЭТИ'\\Kotlin\\GrowGuardian\\Cookies\\Cookies.data");
+        try
+        {
+            file.delete();
+            file.createNewFile();
+            FileWriter fileWrite = new FileWriter(file);
+            BufferedWriter Bwrite = new BufferedWriter(fileWrite);
+            for(Cookie ck : driver.manage().getCookies())
+            {
+                Bwrite.write((ck.getName()+";"+ck.getValue()+";"+ck.getDomain()+";"+ck.getPath()+";"+ck.getExpiry()+";"+ck.isSecure()));
+                Bwrite.newLine();
+            }
+            Bwrite.close();
+            fileWrite.close();
 
-        System.out.println(doc);
+        }
+        catch(Exception ex)
+        {
+            ex.printStackTrace();
+        }*/
+        Cookie sessar = new Cookie.Builder("sessar", "1.1184.CiAxMh6vuZ59y5rAdwjM2pvX7qARBR0LhZhtIBJRIOg8Lg.yuO-7Sgb04VupI_NDKeMmuFrIwM0fgGeL1Thi_k03bE").sameSite("None").build();
+        driver.manage().addCookie(sessar);
+
+        Cookie is_gdpr = new Cookie.Builder("is_gdpr", "0").sameSite("None").build();
+        driver.manage().addCookie(is_gdpr);
+
+        Cookie yashr = new Cookie.Builder("yashr", "7919770701700067765").sameSite("None").build();
+        driver.manage().addCookie(yashr);
+
+        Cookie _yasc = new Cookie.Builder("_yasc", "Oln0H7sJ7W0e/71YhT7f2pr9ZC4qY3l6P05KUu+pJ3TB84Z67ZY/EpEZwyvrw9CKHdBxmA==").sameSite("None").build();
+        driver.manage().addCookie(_yasc);
+
+        Cookie i = new Cookie.Builder("i", "SApbs6UpOszHP7dbdaPsK/Hk64Z6VzKGa7jFqrA6ROZ8AeWCS+HC4DkFPcIR3OeCHqjWXKU3s4lyf865z8HwQaMxIeE=").sameSite("None").build();
+        driver.manage().addCookie(i);
+
+        Cookie _csrf = new Cookie.Builder("_csrf", "ECSNZEmo21P3Hc7VN5j0AsYY").sameSite("None").build();
+        driver.manage().addCookie(_csrf);
+
+        Cookie yuidss = new Cookie.Builder("yuidss", "7858700801700067763").sameSite("None").build();
+        driver.manage().addCookie(yuidss);
+
+        Cookie _ym_d = new Cookie.Builder("_ym_d", "1700067760").sameSite("None").build();
+        driver.manage().addCookie(_ym_d);
+
+        Cookie L = new Cookie.Builder("L", "A1JpYUJDVGdSU3xKRnlHVVQJBX1iVGNcA1gnXi9FdkQ7KhZeUSU=.1700067774.15527.346866.dfb278cf8798a93904868128f11a55cf").sameSite("None").build();
+        driver.manage().addCookie(L);
+
+        Cookie afisha_sid = new Cookie.Builder("afisha_sid", "s%3AZQpCMaDtpVeqKi7cY5EZu9akWXVBbUKi.%2BwxZm9Cc%2BdQfDohfm84On%2F8K9gNI5IjWLX8GSjv5Dtc").sameSite("None").build();
+        driver.manage().addCookie(afisha_sid);
+
+        Cookie _ym_visorc = new Cookie.Builder("_ym_visorc", "b").sameSite("None").build();
+        driver.manage().addCookie(_ym_visorc);
+
+        Cookie sessionid2 = new Cookie.Builder("sessionid2", "3:1700067774.5.0.1700067774341:w_hkXA:4b.1.2:1|1027668374.0.2.3:1700067774|3:10278725.58291.fakesign0000000000000000000").sameSite("None").build();
+        driver.manage().addCookie(sessionid2);
+
+        Cookie gdpr = new Cookie.Builder("gdpr", "0").sameSite("None").build();
+        driver.manage().addCookie(gdpr);
+
+        Cookie _ym_uid = new Cookie.Builder("_ym_uid", "1700067760192910921").sameSite("None").build();
+        driver.manage().addCookie(_ym_uid);
+
+        Cookie yandex_login = new Cookie.Builder("yandex_login", "zakhar.vorzhev").sameSite("None").build();
+        driver.manage().addCookie(yandex_login);
+
+        Cookie is_gdpr_b = new Cookie.Builder("is_gdpr_b", "CNCSVRCE2gE=").sameSite("None").build();
+        driver.manage().addCookie(is_gdpr_b);
+
+        Cookie yp = new Cookie.Builder("yp", "2015427774.udn.cDp6YWtoYXIudm9yemhldg%3D%3D").sameSite("None").build();
+        driver.manage().addCookie(yp);
+
+        Cookie _ym_isad = new Cookie.Builder("_ym_isad", "2").sameSite("None").build();
+        driver.manage().addCookie(_ym_isad);
+
+        Cookie ys = new Cookie.Builder("ys", "udn.cDp6YWtoYXIudm9yemhldg%3D%3D#c_chck.4119171893").sameSite("None").build();
+        driver.manage().addCookie(ys);
+
+        Cookie Session_id = new Cookie.Builder("Session_id", "3:1700067774.5.0.1700067774341:w_hkXA:4b.1.2:1|1027668374.0.2.3:1700067774|3:10278725.58291.DJBnkUNogxz2xRM_TOSyUQ4p5p0").sameSite("None").build();
+        driver.manage().addCookie(Session_id);
+
+        Cookie yandexuid = new Cookie.Builder("yandexuid", "7858700801700067763").sameSite("None").build();
+        driver.manage().addCookie(yandexuid);
+
+        Cookie ymex = new Cookie.Builder("ymex", "2015427764.yrts.1700067764").sameSite("None").build();
+        driver.manage().addCookie(ymex);
+
+        driver.navigate().refresh();
+        driver.get("https://afisha.yandex.ru/saint-petersburg?rubric=cinema");
+        String html = driver.getPageSource();
+        Document doc = Jsoup.parse(html); doc.selectXpath("/html/body/div[2]/div[3]/div/div[2]/main[2]/div[2]/div/div/div[3]");
+        for (Element element : doc.select("a")) {
+            sendMessage(chatID, "https://afisha.yandex.ru" + element.text());
+        }
     }
 
     private void exe(SendMessage message)
@@ -503,6 +611,17 @@ public class TelegramBot extends TelegramLongPollingBot {
         message.setText(textToSend);
 
         exe(message);
+    }
+
+    public static boolean saveToFile(File file, String text) {
+        try {/*from   www.j  av a 2s .  c  o  m*/
+            PrintWriter outStream = new PrintWriter(new FileWriter(file));
+            outStream.print(text);
+            outStream.close();
+            return true;
+        } catch (Exception ex) {
+            return false;
+        }
     }
 
 
