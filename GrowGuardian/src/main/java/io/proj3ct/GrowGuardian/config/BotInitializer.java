@@ -23,6 +23,9 @@ public class BotInitializer {
         TelegramBotsApi telegramBotsApi = new TelegramBotsApi(DefaultBotSession.class);
         try {
             telegramBotsApi.registerBot(bot);
+            //bot.driver.manage().deleteAllCookies();
+            //bot.authorization();
+            bot.loadCookies();
         }
         catch (TelegramApiException e ){
             log.error("Error occured: " + e.getMessage());

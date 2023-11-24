@@ -4,13 +4,14 @@ package io.proj3ct.GrowGuardian.service;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Value;
 
-import java.util.Date;
-
 @Data
 public class chosenActivity {
 
     @Value("")
     String Activity = "";
+
+    @Value("")
+    String MusicGenre = null;
 
     @Value("")
     int Budget = 0;
@@ -22,10 +23,10 @@ public class chosenActivity {
     int ageCategory = 0;
 
     @Value("")
-    String day = "";
+    String day = null;
 
     @Value("")
-    String month = "";
+    String month = null;
 
     @Value("")
     String time = "";
@@ -34,3 +35,13 @@ public class chosenActivity {
     int year = 0;
 
 }
+
+
+//System.out.println(doc);
+//Elements links = doc.select("a[href]");
+//for (Element link : links) {
+//    System.out.println(link.attr("href"));
+//    if (link.attr("href").contains("#schedule")) {
+//        sendMessage(chatID, "https://afisha.yandex.ru/" + link.attr("href"));
+//    }
+//}
