@@ -1,12 +1,11 @@
 package io.proj3ct.GrowGuardian.service;
+import com.google.common.util.concurrent.ClosingFuture;
 import io.proj3ct.GrowGuardian.config.BotConfig;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import org.openqa.selenium.By;
-import org.openqa.selenium.Cookie;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.springframework.stereotype.Component;
@@ -21,12 +20,23 @@ import org.xml.sax.SAXException;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPathExpressionException;
 import java.io.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
 
 @Slf4j
 @Component
 public class TelegramBot extends TelegramLongPollingBot {
+    String DBconnectionUrl =
+            "jdbc:sqlserver://localhost:1433;" +
+                    "databaseName=GrowGuardianLOG;integratedSecurity=true;" +
+                    "encrypt=true;trustServerCertificate=true";
 
     cookies Cook = new cookies();
 
@@ -61,7 +71,7 @@ public class TelegramBot extends TelegramLongPollingBot {
             if (CallData.equals("Budget"))
             {
                 act.setBudget(Integer.parseInt(messagetext));
-                sendMessage(chatID,"Your budget is: " + String.valueOf(act.getBudget()));
+                sendMessage(chatID,"Your budget is: " + act.getBudget());
                 StopUpdate=true;
                 CallData="";
             }
@@ -69,7 +79,7 @@ public class TelegramBot extends TelegramLongPollingBot {
             if (CallData.equals("People"))
             {
                 act.setPeopleCount(Integer.parseInt(messagetext));
-                sendMessage(chatID,"Count of people is: " + String.valueOf(act.getPeopleCount()));
+                sendMessage(chatID,"Count of people is: " + act.getPeopleCount());
                 StopUpdate=true;
                 CallData="";
             }
@@ -77,29 +87,55 @@ public class TelegramBot extends TelegramLongPollingBot {
             if (CallData.equals("Age"))
             {
                 act.setAgeCategory(Integer.parseInt(messagetext));
-                sendMessage(chatID,"Age category set to: " + String.valueOf(act.getAgeCategory()));
+                sendMessage(chatID,"Age category set to: " + act.getAgeCategory());
                 StopUpdate=true;
                 CallData="";
             }
 
+
             switch (messagetext){
                 case "/start":
                     startCommandReceived(chatID,update.getMessage().getChat().getFirstName());
-                    if(driver.findElement(By.xpath("/html/body/div/div[1]/div[2]/h1")).getText().equals("Авторизация не удалась")) {
-                        //authorization();
-                    }
-                    else{
-                        loadCookies();
-                    }
+                    loadCookies();
+
                     break;
                 case "/show":
+
                     try {
                         findActivityReceived(chatID);
                     } catch (IOException | ParserConfigurationException | SAXException | XPathExpressionException |
                              InterruptedException e) {
                         throw new RuntimeException(e);
                     }
+                    try {
+                        DriverManager.registerDriver(new com.microsoft.sqlserver.jdbc.SQLServerDriver());
+                    } catch (SQLException e) {
+                        throw new RuntimeException(e);
+                    }
+                    try {
+                        Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+                    } catch (ClassNotFoundException e) {
+                        throw new RuntimeException(e);
+                    }
+                    ResultSet resultSet = null;
+                    String insertSql = "INSERT INTO LOG (chatID,Topic,Bugdet,Count_of_people,AgeCategory,Date,Time) VALUES " +
+                             '(' + chatID+ ',' + '\'' + act.getActivity() + '\'' + ',' + act.getBudget() + ',' + act.getPeopleCount() + ',' +
+                             act.getAgeCategory() + ',' + '\'' + act.getYear() + '-' + act.getMonth() + '-' + act.getDay() + '\'' + ',' + '\'' + act.getTime() + '\'' + ')';
+                    try (Connection connection = DriverManager.getConnection(DBconnectionUrl);
+                         PreparedStatement prepsInsertProduct = connection.prepareStatement(insertSql, Statement.RETURN_GENERATED_KEYS);) {
+                        prepsInsertProduct.execute();
+                        resultSet = prepsInsertProduct.getGeneratedKeys();
+
+                        while (resultSet.next()) {
+                            System.out.println("Generated: " + resultSet.getString(1));
+                        }
+                    }
+                    // Handle any errors that may have occurred.
+                    catch (Exception e) {
+                        e.printStackTrace();
+                    }
                     break;
+
                 case "/activityParameters":
                     changeParameters(chatID);
                     break;
@@ -114,12 +150,27 @@ public class TelegramBot extends TelegramLongPollingBot {
             long chatId = update.getCallbackQuery().getMessage().getChatId();
             EditMessageText message = new EditMessageText();
 
+            if (callbackData.equals("Top10")) {
+                driver.get("https://afisha.yandex.ru/saint-petersburg");
+
+
+                String html = driver.getPageSource();
+                Document doc = Jsoup.parse(html);
+                Elements elem = doc.selectXpath("/html/body/div[2]/div[3]/div/div[2]/main/div/div[3]/div/div[3]/div[2]");
+                for (Element element : elem.select("a")) {
+                    //if (element.attr("href").contains("#schedule")) {
+                    sendMessage(chatId, "https://afisha.yandex.ru" + element.attr("href") + "&schedule");
+                    //}
+                }
+
+            }
+
             if(callbackData.equals("Morning") || callbackData.equals("Afternoon") || callbackData.equals("Evening")){
                 act.setTime(callbackData);
                 sendMessage(chatId, "Your time is: " + act.getTime());
             }
 
-            if(callbackData.equals("Culture") || callbackData.equals("Education") || callbackData.equals("Sport") || callbackData.equals("SkipTopic")) {
+            if(callbackData.equals("Culture") || callbackData.equals("Education") || callbackData.equals("Sport") || callbackData.equals("Entertainment") || callbackData.equals("SkipTopic")) {
                 if (callbackData.equals("SkipTopic"))
                     sendMessage(chatId, "Your topic is: Any");
                 else {
@@ -158,7 +209,7 @@ public class TelegramBot extends TelegramLongPollingBot {
                 }
             }
 
-            if(callbackData.equals("1") || callbackData.equals("3") || callbackData.equals("5") || callbackData.equals("7") || callbackData.equals("8") || callbackData.equals("10") || callbackData.equals("12")){
+            if(callbackData.equals("01") || callbackData.equals("03") || callbackData.equals("05") || callbackData.equals("07") || callbackData.equals("08") || callbackData.equals("10") || callbackData.equals("12")){
                 act.setMonth(callbackData);
                 message.setText("Choose day");
                 message.setChatId(String.valueOf(chatId));
@@ -167,7 +218,7 @@ public class TelegramBot extends TelegramLongPollingBot {
 
             }
 
-            if(callbackData.equals("4") || callbackData.equals("6") || callbackData.equals("9") || callbackData.equals("11")){
+            if(callbackData.equals("04") || callbackData.equals("06") || callbackData.equals("09") || callbackData.equals("11")){
                 act.setMonth(callbackData);
                 message.setText("Choose day");
                 message.setChatId(String.valueOf(chatId));
@@ -175,7 +226,7 @@ public class TelegramBot extends TelegramLongPollingBot {
                 days(30,message);
             }
 
-            if(callbackData.equals("2")){
+            if(callbackData.equals("02")){
                 act.setMonth(callbackData);
                 message.setText("Choose day");
                 message.setChatId(String.valueOf(chatId));
@@ -198,9 +249,19 @@ public class TelegramBot extends TelegramLongPollingBot {
             //}
 
             if(callbackData.contains("Day")){
-                act.setDay(callbackData.substring(3));
+                act.setDay(callbackData.substring(4));
+                LocalDateTime now = LocalDateTime.now();
+                act.setYear(now.getYear());
+                if (Integer.parseInt(act.month) < now.getMonthValue())
+                {
+                    act.year++;
+                }
+                if (Integer.parseInt(act.month) == now.getMonthValue() && Integer.parseInt(act.day) < now.getDayOfMonth())
+                {
+                    act.year++;
+                }
                 //sendMessage(chatId,"Your date is: " + act.day + ' ' + act.month);
-                message.setText("Your date is: " + act.day + ' ' + act.month);
+                message.setText("Your date is: " + act.day + ' ' + act.month + ' ' + act.year);
                 message.setChatId(String.valueOf(chatId));
                 message.setMessageId((int)messageId);
                 message.setReplyMarkup(null);
@@ -214,14 +275,14 @@ public class TelegramBot extends TelegramLongPollingBot {
                     message.setText("Choose your topic");
                     message.setChatId(String.valueOf(chatId));
                     message.setMessageId((int)messageId);
-                    setActivityTopic(update,message);
+                    setActivityTopic(message);
                     break;
 
                 case "Time":
                     message.setText("Choose your time");
                     message.setChatId(String.valueOf(chatId));
                     message.setMessageId((int)messageId);
-                    time(update,message);
+                    time(message);
                     break;
 
                 case "Budget":
@@ -261,7 +322,7 @@ public class TelegramBot extends TelegramLongPollingBot {
                     message.setText("Choose your genre");
                     message.setChatId(String.valueOf(chatId));
                     message.setMessageId((int)messageId);
-                    setMusicStyle(update,message);
+                    setMusicStyle(message);
                     break;
 
                 case "SkipAll":
@@ -281,7 +342,7 @@ public class TelegramBot extends TelegramLongPollingBot {
         }
     }
 
-    public void time(Update update,EditMessageText message){
+    public void time(EditMessageText message){
         InlineKeyboardMarkup markupInLine = new InlineKeyboardMarkup();
         List<List<InlineKeyboardButton>> rowsInLine = new ArrayList<>();
         List<InlineKeyboardButton> rowInLine = new ArrayList<>();
@@ -328,7 +389,10 @@ public class TelegramBot extends TelegramLongPollingBot {
         {
             var qwe = new InlineKeyboardButton();
             qwe.setText(String.valueOf(i));
-            qwe.setCallbackData("Day" + i);
+            if (i < 10)
+                qwe.setCallbackData("Day 0" + i);
+            else
+                qwe.setCallbackData("Day " + i);
             if (i <= 7)
                 rowInLine1.add(qwe);
             else if (i <= 14)
@@ -368,39 +432,39 @@ public class TelegramBot extends TelegramLongPollingBot {
 
         var January = new InlineKeyboardButton();
         January.setText("January");
-        January.setCallbackData("1");
+        January.setCallbackData("01");
 
         var February = new InlineKeyboardButton();
         February.setText("February");
-        February.setCallbackData("2");
+        February.setCallbackData("02");
 
         var March = new InlineKeyboardButton();
         March.setText("March");
-        March.setCallbackData("3");
+        March.setCallbackData("03");
 
         var April = new InlineKeyboardButton();
         April.setText("April");
-        April.setCallbackData("4");
+        April.setCallbackData("04");
 
         var May = new InlineKeyboardButton();
         May.setText("May");
-        May.setCallbackData("5");
+        May.setCallbackData("05");
 
         var June = new InlineKeyboardButton();
         June.setText("June");
-        June.setCallbackData("6");
+        June.setCallbackData("06");
 
         var July = new InlineKeyboardButton();
         July.setText("July");
-        July.setCallbackData("7");
+        July.setCallbackData("07");
 
         var August = new InlineKeyboardButton();
         August.setText("August");
-        August.setCallbackData("8");
+        August.setCallbackData("08");
 
         var September = new InlineKeyboardButton();
         September.setText("September");
-        September.setCallbackData("9");
+        September.setCallbackData("09");
 
         var October = new InlineKeyboardButton();
         October.setText("October");
@@ -439,7 +503,7 @@ public class TelegramBot extends TelegramLongPollingBot {
 
     }
 
-    public void setMusicStyle(Update update,EditMessageText message)
+    public void setMusicStyle(EditMessageText message)
     {
         InlineKeyboardMarkup markupInLine = new InlineKeyboardMarkup();
         List<List<InlineKeyboardButton>> rowsInLine = new ArrayList<>();
@@ -520,15 +584,15 @@ public class TelegramBot extends TelegramLongPollingBot {
 
         exe(message);
 
-        //act.setActivity(update.getCallbackQuery().getData());                                             ???????????
 
     }
-    public void setActivityTopic(Update update,EditMessageText message) {
+    public void setActivityTopic(EditMessageText message) {
 
         InlineKeyboardMarkup markupInLine = new InlineKeyboardMarkup();
         List<List<InlineKeyboardButton>> rowsInLine = new ArrayList<>();
         List<InlineKeyboardButton> rowInLine = new ArrayList<>();
         List<InlineKeyboardButton> rowInLine2 = new ArrayList<>();
+        List<InlineKeyboardButton> rowInLine3 = new ArrayList<>();
         List<InlineKeyboardButton> skipList = new ArrayList<>();
 
         var CultButton = new InlineKeyboardButton();
@@ -547,6 +611,14 @@ public class TelegramBot extends TelegramLongPollingBot {
         MusicButton.setText("Music");
         MusicButton.setCallbackData("Music");
 
+        var EntertainmentButton = new InlineKeyboardButton();
+        EntertainmentButton.setText("Entertainment");
+        EntertainmentButton.setCallbackData("Entertainment");
+
+        var TopButton = new InlineKeyboardButton();
+        TopButton.setText("Top 10");
+        TopButton.setCallbackData("Top10");
+
         var SkipButton = new InlineKeyboardButton();
         SkipButton.setText("Any");
         SkipButton.setCallbackData("SkipTopic");
@@ -560,6 +632,9 @@ public class TelegramBot extends TelegramLongPollingBot {
         rowInLine2.add(MusicButton);
         rowsInLine.add(rowInLine2);
 
+        rowInLine3.add(EntertainmentButton);
+        rowInLine3.add(TopButton);
+        rowsInLine.add(rowInLine3);
 
         skipList.add(SkipButton);
 
@@ -570,8 +645,6 @@ public class TelegramBot extends TelegramLongPollingBot {
 
         exe(message);
 
-        act.setActivity(update.getCallbackQuery().getData());
-
     }
 
     private void changeParameters(long chatID)
@@ -579,7 +652,7 @@ public class TelegramBot extends TelegramLongPollingBot {
 
         SendMessage message = new SendMessage();
         message.setChatId(String.valueOf(chatID));
-        message.setText("Select category to change");
+        message.setText("Select category to set");
 
         InlineKeyboardMarkup markupInLine = new InlineKeyboardMarkup();
         List<List<InlineKeyboardButton>> rowsInLine = new ArrayList<>();
@@ -674,11 +747,27 @@ public class TelegramBot extends TelegramLongPollingBot {
         ArrayList<String> filter = new ArrayList<>();
 
 
+
+
         if (act.day != null && act.month != null) {
-            urlcore += "date=2023-" + act.month + "-" + act.day;
+
+            urlcore += "date=" + act.year + "-" + act.month + "-" + act.day;
         }
 
+        if (act.Activity == null)
+        {
+            driver.get(urlcore);
 
+            String html = driver.getPageSource();
+            Document doc = Jsoup.parse(html);
+            Elements elem = doc.selectXpath("/html/body/div[2]/div[3]/div/div[2]/main/div[2]/div/div/div[3]");
+
+            for (Element element : elem.select("a")) {
+                if (element.attr("href").contains("#schedule")) {
+                    sendMessage(chatID, "https://afisha.yandex.ru" + element.attr("href"));
+                }
+            }
+        }
 
         if (act.Activity.equals("Culture"))
         {
@@ -694,6 +783,11 @@ public class TelegramBot extends TelegramLongPollingBot {
         {
             activity.add("&rubric=excursions");
             activity.add("&rubric=art");
+        }
+        if (act.Activity.equals("Entertainment"))
+        {
+            activity.add("&rubric=standup");
+            activity.add("&rubric=attractions");
         }
         if (act.Activity.equals("Music"))
         {
@@ -731,7 +825,7 @@ public class TelegramBot extends TelegramLongPollingBot {
             url += activity.get(activity.size()-1);
             if (act.Activity.equals("Music") && !filter.isEmpty())
             {
-                url+= filter.get(activity.size()-1);
+                url+= filter.get(filter.size()-1);
             }
             activity.remove(activity.size()-1);
             driver.get(url);
@@ -739,9 +833,7 @@ public class TelegramBot extends TelegramLongPollingBot {
 
             String html = driver.getPageSource();
             Document doc = Jsoup.parse(html);
-            //Document doc = Jsoup.connect("https://afisha.yandex.ru/saint-petersburg?rubric=cinema").get();
             Elements elem = doc.selectXpath("/html/body/div[2]/div[3]/div/div/div[2]/main/div[2]/div/div/div[3]");
-            // /html/body/div[2]/div[3]/div/div/div[2]/main[2]/div[2]/div/div/div[3]
             for (Element element : elem.select("a")) {
                 if (element.attr("href").contains("#schedule")) {
                     sendMessage(chatID, "https://afisha.yandex.ru" + element.attr("href"));
@@ -783,7 +875,9 @@ public class TelegramBot extends TelegramLongPollingBot {
         exe(message);
     }
 
-    public void authorization() throws InterruptedException {
+
+    // sms s kodom, nado shto-to pridumat'
+   /* public void authorization() throws InterruptedException {
         System.setProperty("webdriver.gecko.driver","C:\\Users\\DELL\\Desktop\\Новая папка (2)\\GrowGuardian\\drivers\\geckodriver.exe");
         driver.get("https://passport.yandex.ru/auth/welcome?origin=afisha&retpath=https%3A%2F%2Fafisha.yandex.ru%2Fsaint-petersburg");
         driver.findElement(By.xpath("//*[@id=\"passp-field-login\"]")).sendKeys("zakhar.vorzhev@yandex.ru");
@@ -835,7 +929,7 @@ public class TelegramBot extends TelegramLongPollingBot {
 
         Cook.ymex = driver.manage().getCookieNamed("ymex");
 
-        /*java.util.concurrent.TimeUnit.SECONDS.sleep(20);
+        java.util.concurrent.TimeUnit.SECONDS.sleep(20);
         File file = new File("C:\\Users\\klaim\\Desktop\\'ЛЭТИ'\\Kotlin\\GrowGuardian\\Cookies\\Cookies.data");
         try
         {
@@ -855,8 +949,12 @@ public class TelegramBot extends TelegramLongPollingBot {
         catch(Exception ex)
         {
             ex.printStackTrace();
-        }*/
+        }
+    }*/
+
+   /*if(driver.findElement(By.xpath("/html/body/div/div[1]/div[2]/h1")).getText().equals("Авторизация не удалась")) {
+        //authorization();
     }
-
-
+                    else{
+    }*/                                                // "if" for authorization
 }
