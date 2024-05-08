@@ -1,0 +1,10 @@
+F:\Проги\CardScanner\CardScanner\bin\Debug\CardScanner.exe.config
+F:\Проги\CardScanner\CardScanner\bin\Debug\CardScanner.exe
+F:\Проги\CardScanner\CardScanner\bin\Debug\CardScanner.pdb
+F:\Проги\CardScanner\CardScanner\obj\Debug\CardScanner.csproj.AssemblyReference.cache
+F:\Проги\CardScanner\CardScanner\obj\Debug\CardScanner.Form1.resources
+F:\Проги\CardScanner\CardScanner\obj\Debug\CardScanner.Properties.Resources.resources
+F:\Проги\CardScanner\CardScanner\obj\Debug\CardScanner.csproj.GenerateResource.cache
+F:\Проги\CardScanner\CardScanner\obj\Debug\CardScanner.csproj.CoreCompileInputs.cache
+F:\Проги\CardScanner\CardScanner\obj\Debug\CardScanner.exe
+F:\Проги\CardScanner\CardScanner\obj\Debug\CardScanner.pdb
