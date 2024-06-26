@@ -1,0 +1,364 @@
+#include "TFT_eSPI.h";
+#include "LCDWIKI_TOUCH.h";
+#include "Servo.h";
+#include "HX711.h";
+
+TFT_eSPI tft = TFT_eSPI();
+LCDWIKI_TOUCH my_touch(2,3,4,5,6); //tcs,tclk,tdout,tdin,tirq
+TFT_eSPI_Button mainButtons[5];
+Servo baraban;
+Servo dver;
+HX711 scale(9, 10);
+float myScale;
+
+uint8_t countBut=0;
+bool allTubes = false;
+const char* alphabet[] = {"a","б","в","г","д","е","ё","ж","з","и","й","к","л","м","н","о","п","р","с","т","у","ф","х","ц","ч","ш","щ","ъ","ы","ь","э","ю","я"};
+const char* numpad[] = {"1","2","3","4","5","6","7","8","9","0"};
+
+
+String drawKeypad(){
+  tft.fillScreen(TFT_BLACK);
+  TFT_eSPI_Button key;
+  TFT_eSPI_Button OK;
+  TFT_eSPI_Button DEL;
+  TFT_eSPI_Button SPACE;
+  tft.drawRect(0, 0, 475, 50, TFT_WHITE);
+
+
+  OK.initButton(&tft, 240,
+                        76,
+                        50, 50, TFT_WHITE, TFT_RED, TFT_WHITE,
+                        "OK", 3);
+  OK.drawButton();
+
+  DEL.initButton(&tft, 292,
+                        76,
+                        50, 50, TFT_WHITE, TFT_RED, TFT_WHITE,
+                        "DEL", 2);
+  DEL.drawButton();
+
+  SPACE.initButton(&tft, 188,
+                        76,
+                        50, 50, TFT_WHITE, TFT_RED, TFT_WHITE,
+                        "SP", 3);
+  SPACE.drawButton();
+
+
+
+  for (uint8_t row = 0; row < 3; row++) {
+    for (uint8_t col = 0; col < 11; col++) {
+      uint8_t b = row * 11 + col;
+
+      key.initButton(&tft, 21+col*43,
+                        180+50*row,
+                        35, 38, TFT_WHITE, TFT_RED, TFT_WHITE,
+                        alphabet[b], 2);
+      key.drawButton();
+    }
+  }
+  String tmp = "";
+
+  while(1){
+    my_touch.TP_Scan(0);
+    if (my_touch.TP_Get_State()&TP_PRES_DOWN){
+      // OK PRESSED
+      if(50< my_touch.y && my_touch.y<126){
+        if(215< my_touch.x && my_touch.x<265){
+          return tmp; 
+        }
+      }
+
+      // DELL PRESSED
+      if(50< my_touch.y && my_touch.y<126){
+        if(267< my_touch.x && my_touch.x<317){
+          tmp.remove(tmp.length()-1);
+          tmp.remove(tmp.length()-1);
+          tft.fillRect(24,24,450,24,TFT_BLACK);
+          tft.drawString(tmp,25,25);
+        }
+      }
+
+      // SPACE PRESSED
+      if(50< my_touch.y && my_touch.y<126){
+        if(163< my_touch.x && my_touch.x<213){
+          tmp += " ";
+          tft.drawString(tmp,25,25);
+        }
+      }  
+
+      int letCount = ceil(my_touch.x/44);
+
+
+      // FIRST ROW
+      if(180< my_touch.y && my_touch.y<218){
+      
+        tmp += alphabet[letCount];
+        tft.drawString(tmp,25,25);
+
+      }
+
+      // SECOND ROW
+      else if(218< my_touch.y && my_touch.y<256){
+        tmp += alphabet[letCount+11];
+        tft.drawString(tmp,25,25);
+      }
+
+      // THIRD ROW
+      else if(256< my_touch.y && my_touch.y<294){
+        
+        tmp += alphabet[letCount+22];
+        tft.drawString(tmp,25,25);
+      }
+      delay(200);
+    }
+  }
+
+}
+
+
+
+String drawNumpad(){
+  tft.fillScreen(TFT_BLACK);
+  TFT_eSPI_Button key;
+  TFT_eSPI_Button OK;
+  TFT_eSPI_Button DEL;
+  TFT_eSPI_Button SPACE;
+  tft.drawRect(0, 0, 475, 50, TFT_WHITE);
+
+  OK.initButton(&tft, 240,
+                        76,
+                        50, 50, TFT_WHITE, TFT_RED, TFT_WHITE,
+                        "OK", 3);
+  OK.drawButton();
+
+  DEL.initButton(&tft, 292,
+                        76,
+                        50, 50, TFT_WHITE, TFT_RED, TFT_WHITE,
+                        "DEL", 2);
+  DEL.drawButton();
+
+  SPACE.initButton(&tft, 188,
+                        76,
+                        50, 50, TFT_WHITE, TFT_RED, TFT_WHITE,
+                        "SP", 3);
+  SPACE.drawButton();
+
+
+
+  for (uint8_t row = 0; row < 2; row++) {
+    for (uint8_t col = 0; col < 5; col++) {
+      uint8_t b = row * 5 + col;
+
+      key.initButton(&tft, 120+col*60,
+                        180+60*row,
+                        50, 50, TFT_WHITE, TFT_RED, TFT_WHITE,
+                        numpad[b], 2);
+      key.drawButton();
+    }
+  }
+  String tmp = "";
+
+  while(1){
+    my_touch.TP_Scan(0);
+    if (my_touch.TP_Get_State()&TP_PRES_DOWN){
+      // OK PRESSED
+      if(50< my_touch.y && my_touch.y<126){
+        if(215< my_touch.x && my_touch.x<265){
+          return tmp; 
+        }
+      }
+
+      // DELL PRESSED
+      if(50< my_touch.y && my_touch.y<126){
+        if(267< my_touch.x && my_touch.x<317){
+          tmp.remove(tmp.length()-1);
+          tmp.remove(tmp.length()-1);
+          tft.fillRect(24,24,450,24,TFT_BLACK);
+          tft.drawString(tmp,25,25);
+        }
+      }
+
+      // SPACE PRESSED
+      if(50< my_touch.y && my_touch.y<126){
+        if(163< my_touch.x && my_touch.x<213){
+          tmp += " ";
+          tft.drawString(tmp,25,25);
+        }
+      }  
+
+      int letCount = ceil((my_touch.x-95)/60);
+
+
+      // FIRST ROW
+      if(155< my_touch.y && my_touch.y<205){
+      
+        tmp += numpad[letCount];
+        tft.drawString(tmp,25,25);
+
+      }
+
+      // SECOND ROW
+      else if(215< my_touch.y && my_touch.y<265){
+        tmp += numpad[letCount+5];
+        tft.drawString(tmp,25,25);
+      }
+      delay(200);
+    }
+  }
+
+}
+
+
+
+void createButton(){
+  String name = drawKeypad();
+  delay(100);
+  mainButtons[countBut].initButton(&tft, 240,
+                        33+75*countBut,
+                        480, 65, TFT_WHITE, TFT_RED, TFT_WHITE, name.c_str(),
+                        3);
+  
+  if(countBut!=4){
+    countBut++;
+    mainButtons[countBut].initButton(&tft, 240,
+                        33+75*countBut,
+                        480, 65, TFT_WHITE, TFT_RED, TFT_WHITE, "+"
+                        , 3);
+    show_menu();
+    return;
+  }
+  show_menu();
+}
+
+
+
+void PourOut(){
+  int weight = atoi(drawNumpad().c_str());
+  bool flagClose = false;
+  dver.write(45);
+  while(!flagClose){
+    myScale = scale.get_units(20);
+    if(myScale >= weight){
+      break;
+    }
+    //Serial.println(myScale);
+
+  }
+  dver.write(0);
+  delay(150);
+  show_menu();
+}
+
+
+
+void selectTube(uint8_t num){
+  switch(num){
+    case 1:
+      baraban.write(0);
+      PourOut();
+
+      break;
+    case 2:
+      baraban.write(90);
+      PourOut();
+      
+
+      break;
+    case 3:
+      baraban.write(180);
+      PourOut();
+      
+
+      break;
+    case 4:
+      baraban.write(360);
+      PourOut();
+
+      break;
+  }
+}
+
+
+
+void show_menu(){
+  tft.fillScreen(TFT_BLACK);
+  if(countBut!=4){
+    for(int i=0;i<countBut+1;i++){
+      mainButtons[i].drawButton();
+    }
+  }
+  else{
+    for(int i=0;i<countBut;i++){
+      mainButtons[i].drawButton();
+    }
+  }
+}
+
+
+
+void setup() {
+  tft.init();
+  tft.setRotation(1);
+  tft.fillScreen(TFT_BLACK);
+
+  my_touch.TP_Init(tft.getRotation(),tft.getViewportWidth(),tft.getViewportHeight());
+  my_touch.TP_Set_Rotation(3); 
+
+  baraban.attach(8);
+  dver.attach(7);
+
+  scale.set_scale(-3.50);                          // Устанавливаем калибровочный коэффициент 
+  scale.tare();                                     // Сбрасываем весы на 0
+  myScale = round(scale.get_units(10));             // Запоминаем среднее значение без груза, но с учетом тары 
+
+
+  mainButtons[0].initButton(&tft, 240,
+                         33+70*countBut,
+                         480, 65, TFT_WHITE, TFT_RED, TFT_WHITE,"+"
+                         ,3);
+  mainButtons[0].drawButton();
+
+  tft.setTextSize(2);
+  tft.drawString("Нажмите на кнопку, чтобы начать работу",0,70);
+}
+
+void loop() {
+comme:
+  my_touch.TP_Scan(0);
+  if (my_touch.TP_Get_State()&TP_PRES_DOWN){
+
+    // Первая ячейка
+    if(33< my_touch.y && my_touch.y<98){
+      if(countBut==0) createButton();
+      else{
+        selectTube(1);
+      }
+    }
+
+    // Вторая ячейка
+    if(103< my_touch.y && my_touch.y<168){
+      if(countBut==1) createButton();
+      else{
+        selectTube(2);
+      }  
+    }
+
+    // Третья ячейка
+    if(173< my_touch.y && my_touch.y<238){
+      if(countBut==2) createButton();
+      else{
+        selectTube(3);
+      }
+    }
+
+    // Четвертая ячейка
+    if(243< my_touch.y && my_touch.y<308){
+      if(countBut==3) createButton();
+      else{
+        selectTube(4);
+      }  
+    }
+
+  }
+}
